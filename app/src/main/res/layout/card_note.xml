@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="200dp">
+    android:layout_width="match_parent" android:layout_height="200dp"
+    android:id="@+id/noteCardView">
     <TextView
         android:id="@+id/card_note_title"
         android:layout_width="match_parent"
-        android:layout_height="100sp"/>
+        android:layout_height="100sp"
+        android:gravity="center"
+        android:text="fesfsef"/>
 
 </androidx.cardview.widget.CardView>
