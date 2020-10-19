@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +56,6 @@ public class NotelistActivity extends AppCompatActivity {
        recyclerView.setLayoutManager(new LinearLayoutManager(this));
        adapter = new NotelistAdapter(list, this);
        recyclerView.setAdapter(adapter);
-
     }
 
 

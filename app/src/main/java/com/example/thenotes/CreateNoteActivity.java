@@ -38,7 +38,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                 noteTitle.setText(cursor.getString(1));
                 noteText.setText(cursor.getString(2));
                 cursor.close();
-                notesDatabaseHelper.close();
+
             }
 
 
@@ -47,7 +47,15 @@ public class CreateNoteActivity extends AppCompatActivity {
         saveNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                notesDatabaseHelper.saveNote(noteTitle.getText().toString(), noteText.getText().toString());
+                if(getIntent().hasExtra("EXTRA")){
+                    notesDatabaseHelper.updateNote(getIntent().getExtras().getInt("EXTRA") + 1, noteTitle.getText().toString(),
+                            noteText.getText().toString());
+
+                } else {
+                    notesDatabaseHelper.saveNote(noteTitle.getText().toString(), noteText.getText().toString());
+
+                }
+
                Intent intent = new Intent(getApplicationContext(), NotelistActivity.class);
                startActivity(intent);
             }

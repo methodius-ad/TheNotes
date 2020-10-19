@@ -33,6 +33,7 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
         super.onDowngrade(db, oldVersion, newVersion);
     }
 
+
     public void saveNote(String noteTitle, String noteText){
         db  = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -42,7 +43,11 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void updateNote(int noteID, String noteTitle, String noteText){
-        // to do method that updates notes
+        db.execSQL("INSERT " + noteTitle + " AND " + noteText +" INTO " + noteID);
+    }
+
+    public void deleteNote(int noteID){
+        db.execSQL("DELETE FROM NOTES WHERE " + noteID);
     }
 
     public Cursor getCursor(){

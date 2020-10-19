@@ -3,8 +3,12 @@ package com.example.thenotes;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,14 +27,16 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     ArrayList<String> notesList;
     Context context;
+    boolean deleted = false;
+    TextView noteView;
 
     NotelistAdapter(ArrayList<String>list, Context context){
       notesList = list;
       this.context = context;
      // notesList.add("ijk");
-
     }
     @NonNull
     @Override
@@ -43,7 +49,8 @@ public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
-        final TextView noteView = (TextView) holder.itemView.findViewById(R.id.card_note_title);
+         noteView = (TextView) holder.itemView.findViewById(R.id.card_note_title);
+
          noteView.setText(notesList.get(position));
          holder.itemView.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -55,6 +62,15 @@ public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
              }
          });
 
+         if(deleted == true){
+             NotesDatabaseHelper n = new NotesDatabaseHelper(context);
+             n.getWritableDatabase();
+             n.deleteNote(position);
+             n.close();
+
+         }
+         deleted = false;
+
     }
 
     @Override
@@ -63,14 +79,47 @@ public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    class NoteViewHolder extends RecyclerView.ViewHolder {
+
+
+    class NoteViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+        MenuItem item;
         CardView noteViewHolder;
+
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
             noteViewHolder = (CardView) itemView;
 
+            itemView.setOnCreateContextMenuListener(this);
+
         }
 
+        // Context Menu for Notelist
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+               MenuItem delete = menu.add(0, noteView.getId(), Menu.NONE, "delete");
+               delete.setOnMenuItemClickListener(onEditMenu);
+
+
+
+        }
+        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getGroupId()) {
+
+                    case 0:
+
+                        deleted = true;
+                        Toast.makeText(context, "ok, the note deleted", Toast.LENGTH_SHORT).show();
+                        Log.d("OnContextClick delete", "101");
+
+                        break;
+                }
+                return true;
+            }
+        };
 
     }
 
