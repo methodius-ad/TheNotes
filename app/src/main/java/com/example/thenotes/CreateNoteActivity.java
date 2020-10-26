@@ -51,6 +51,7 @@ public class CreateNoteActivity extends AppCompatActivity {
                     notesDatabaseHelper.updateNote(getIntent().getExtras().getInt("EXTRA") + 1, noteTitle.getText().toString(),
                             noteText.getText().toString());
 
+
                 } else {
                     notesDatabaseHelper.saveNote(noteTitle.getText().toString(), noteText.getText().toString());
 

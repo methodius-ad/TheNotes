@@ -28,12 +28,12 @@ import java.util.zip.Inflater;
 
 public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    ArrayList<String> notesList;
+    List<Note> notesList;
     Context context;
     boolean deleted = false;
     TextView noteView;
 
-    NotelistAdapter(ArrayList<String>list, Context context){
+    NotelistAdapter(List<Note>list, Context context){
       notesList = list;
       this.context = context;
      // notesList.add("ijk");
@@ -51,25 +51,19 @@ public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
          noteView = (TextView) holder.itemView.findViewById(R.id.card_note_title);
 
-         noteView.setText(notesList.get(position));
+         noteView.setText(notesList.get(position).getTitle());
          holder.itemView.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  Intent intent = new Intent(context, CreateNoteActivity.class);
                  intent.putExtra("EXTRA", position);
                  context.startActivity(intent);
+                 notifyDataSetChanged();
 
              }
          });
 
-         if(deleted == true){
-             NotesDatabaseHelper n = new NotesDatabaseHelper(context);
-             n.getWritableDatabase();
-             n.deleteNote(position);
-             n.close();
 
-         }
-         deleted = false;
 
     }
 
@@ -112,6 +106,11 @@ public class NotelistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     case 0:
 
                         deleted = true;
+
+                        NotesDatabaseHelper n = new NotesDatabaseHelper(context);
+                        n.getWritableDatabase();
+                        n.deleteNote(getAdapterPosition());
+                        notifyDataSetChanged();
                         Toast.makeText(context, "ok, the note deleted", Toast.LENGTH_SHORT).show();
                         Log.d("OnContextClick delete", "101");
 

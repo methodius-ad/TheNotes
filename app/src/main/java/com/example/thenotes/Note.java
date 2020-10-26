@@ -7,27 +7,27 @@ public class Note {
     private String mNoteText;
     private Date mNoteCreationDate;
 
-    public String getmTitle() {
+    public String getTitle() {
         return mTitle;
     }
 
-    public void setmTitle(String mTitle) {
+    public void setTitle(String mTitle) {
         this.mTitle = mTitle;
     }
 
-    public String getmNoteText() {
+    public String getNoteText() {
         return mNoteText;
     }
 
-    public void setmNoteText(String mNoteText) {
+    public void setNoteText(String mNoteText) {
         this.mNoteText = mNoteText;
     }
 
-    public Date getmNoteCreationDate() {
+    public Date getNoteCreationDate() {
         return mNoteCreationDate;
     }
 
-    public void setmNoteCreationDate(Date mNoteCreationDate) {
+    public void setNoteCreationDate(Date mNoteCreationDate) {
         this.mNoteCreationDate = mNoteCreationDate;
     }
 }

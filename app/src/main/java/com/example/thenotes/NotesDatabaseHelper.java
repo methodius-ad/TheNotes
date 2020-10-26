@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -43,11 +44,22 @@ public class NotesDatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void updateNote(int noteID, String noteTitle, String noteText){
-        db.execSQL("INSERT " + noteTitle + " AND " + noteText +" INTO " + noteID);
+        String UUID = noteID + "";
+        Log.d("UUID", UUID);
+        db = getWritableDatabase();
+        deleteNote(noteID);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(NAME, noteTitle);
+        contentValues.put(NOTE, noteText);
+
+        db.insert("NOTES", null, contentValues);
+
     }
 
     public void deleteNote(int noteID){
-        db.execSQL("DELETE FROM NOTES WHERE " + noteID);
+        String UUID = noteID + "";
+        db = this.getWritableDatabase();
+        db.delete("NOTES", "_id = ?", new String[]{UUID});
     }
 
     public Cursor getCursor(){

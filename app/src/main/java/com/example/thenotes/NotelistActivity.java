@@ -27,7 +27,7 @@ public class NotelistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
 
-    ArrayList<String>list = new ArrayList<>();
+    ArrayList<Note>list = new ArrayList<>();
 
     NotesDatabaseHelper notesDatabaseHelper;
 
@@ -51,11 +51,11 @@ public class NotelistActivity extends AppCompatActivity {
 
         addNote();
 
-       recyclerView = findViewById(R.id.rec);
-       recyclerView.setHasFixedSize(true);
-       recyclerView.setLayoutManager(new LinearLayoutManager(this));
-       adapter = new NotelistAdapter(list, this);
-       recyclerView.setAdapter(adapter);
+        recyclerView = findViewById(R.id.rec);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new NotelistAdapter(list, this);
+        recyclerView.setAdapter(adapter);
     }
 
 
@@ -72,17 +72,19 @@ public class NotelistActivity extends AppCompatActivity {
     }
 
     public void fillNotelist(){
-            Cursor cursor = notesDatabaseHelper.getCursor();
+        Cursor cursor = notesDatabaseHelper.getCursor();
 
-            if(cursor!=null){
-                cursor.moveToFirst();
-           do{
-               list.add(cursor.getString(1));
-           }while(cursor.moveToNext());
+        if(cursor!=null){
+            cursor.moveToFirst();
+            do{
+                Note note = new Note();
+                note.setTitle(cursor.getString(1));
+                list.add(note);
+            }while(cursor.moveToNext());
 
-            }
-            cursor.close();
-            notesDatabaseHelper.close();
+        }
+        cursor.close();
+        notesDatabaseHelper.close();
 
     }
 }
